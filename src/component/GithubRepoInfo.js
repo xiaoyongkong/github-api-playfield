@@ -20,7 +20,7 @@ const GithubRepoInfo = () => {
       {repoInfo ? (
         <div>
           <h2>{"Repo Name -> " + repoInfo.name}</h2>
-          <p>{"Repo Description -> " + repoInfo.description}</p>
+          <p>{"Repo Description -> " + (repoInfo.description == null && "None")}</p>
           <p>{"Repo Owner -> " + repoInfo.owner.login}</p>
           <p>{"Repo URL -> " + repoInfo.html_url}</p>
         </div>
