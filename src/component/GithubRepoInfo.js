@@ -147,7 +147,7 @@ const GithubRepoInfo = () => {
                 <p className="repo-container__description--text">{repo.description || "None"}</p>
               </h5>
               <p>{repo.html_url}</p>
-                <div>
+                <div className={"repo-container__button"}>
                   <button onClick={() => handleEditRepo(repo.id)}>Edit</button>
                   <button className={"repo-container__button--delete"} onClick={() => handleDeleteRepo(repo.name)}>Delete</button>
                 </div>

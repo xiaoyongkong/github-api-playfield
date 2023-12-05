@@ -5,7 +5,7 @@ body {
 button {
   margin: 0 10px;
   border-radius: 5px;
-  padding: 5px 50px;
+  padding: 10px 50px;
 }
 
 
@@ -20,7 +20,7 @@ button {
   border: 1px solid black;
   padding: 0px 20px 20px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin: 0px 80px 20px;
   background-color: #d3d3d3;
 }
 
@@ -30,6 +30,11 @@ button {
   font-weight: normal;
   margin-top: 5px;
   background-color: #ffffff;
+}
+
+.repo-container__button {
+  display: flex;
+  justify-content: center;
 }
 
 .repo-container__button--delete {
