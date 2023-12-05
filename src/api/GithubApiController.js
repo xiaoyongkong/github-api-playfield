@@ -1,6 +1,6 @@
 const { Octokit } = require('@octokit/rest');
 
-const username = 'xiaoyongkong'; //set Your github username for tests purpose
+const username = 'xiaoyongkong';
 const accessToken = 'YOUR_GITHUB_TOKEN';
 
 const octokit = new Octokit({

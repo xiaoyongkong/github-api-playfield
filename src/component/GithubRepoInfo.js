@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './GithubRepoInfo.css';
 
 const GithubRepoInfo = () => {
   const [repos, setRepos] = useState([]);
@@ -9,6 +13,8 @@ const GithubRepoInfo = () => {
     name: '',
     description: '',
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     fetchRepos();
@@ -29,7 +35,9 @@ const GithubRepoInfo = () => {
     const apiUrl = 'http://localhost:3001/api/create-repo';
     try {
       await axios.post(apiUrl, { name: newRepoName });
-      console.log('Repository created successfully');
+      toast.success('Repository created successfully', {
+        position: toast.POSITION.TOP_CENTER,
+      });
       fetchRepos();
     } catch (error) {
       console.error('Error:', error.message);
@@ -82,26 +90,36 @@ const GithubRepoInfo = () => {
     }
   };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
-      <div>
+      <ToastContainer />
+      <button onClick={() => setIsModalOpen(true)}>Create New Repository</button>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleModalClose}
+        contentLabel="Create New Repository Modal"
+      >
+        <h2>Create New Repository</h2>
         <label>
-          New Repository:
+          Repository Name:
           <input
             type="text"
             value={newRepoName}
             onChange={(e) => setNewRepoName(e.target.value)}
           />
         </label>
-        <button onClick={handleCreateRepo}>Create New Repository</button>
-      </div>
+        <button onClick={handleCreateRepo}>Save</button>
+      </Modal>
 
       {repos.length > 0 ? (
         <div>
           <h2>List of Repositories</h2>
-          <ul>
             {repos.map(repo => (
-              <li key={repo.id}>
+              <div className="repo-container" key={repo.id}>
                 <h3>{"Repo Name -> " + repo.name}</h3>
                 <p>{"Repo Description -> " + (repo.description || "None")}</p>
                 <p>{"Repo URL -> " + repo.html_url}</p>
@@ -133,9 +151,8 @@ const GithubRepoInfo = () => {
                     <button onClick={() => handleDeleteRepo(repo.name)}>Delete</button>
                   </div>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
         </div>
       ) : (
         <p>Loading repository information...</p>
