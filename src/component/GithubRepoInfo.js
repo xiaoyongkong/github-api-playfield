@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
 import { ToastContainer, toast } from 'react-toastify';
+import CreateModal from './Modal/CreateRepo';
+import EditModal from './Modal/EditRepo';
+
 import 'react-toastify/dist/ReactToastify.css';
 import './GithubRepoInfo.css';
 
@@ -13,8 +15,9 @@ const GithubRepoInfo = () => {
     name: '',
     description: '',
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     fetchRepos();
@@ -39,6 +42,7 @@ const GithubRepoInfo = () => {
         position: toast.POSITION.TOP_CENTER,
       });
       fetchRepos();
+      setIsCreateModalOpen(false);
     } catch (error) {
       console.error('Error:', error.message);
       toast.error('Error:' + error.message, {
@@ -54,6 +58,7 @@ const GithubRepoInfo = () => {
       name: repoToEdit.name,
       description: repoToEdit.description || '',
     });
+    setIsEditModalOpen(true);
   };
 
   const handleEditInputChange = (e) => {
@@ -80,6 +85,7 @@ const GithubRepoInfo = () => {
         name: '',
         description: '',
       });
+      setIsEditModalOpen(false);
     } catch (error) {
       console.error('Error:', error.message);
       toast.error('Error:' + error.message, {
@@ -88,8 +94,12 @@ const GithubRepoInfo = () => {
     }
   };
 
-  const handleDeleteRepo = async (repoId) => {
-    const apiUrl = `http://localhost:3001/api/delete-repo/${repoId}`;
+  const handleDeleteRepo = async (repoName) => {
+    const shouldDelete = window.confirm('Are you sure you want to delete ' + repoName + ' ?');
+    if (!shouldDelete) {
+      return;
+    }
+    const apiUrl = `http://localhost:3001/api/delete-repo/${repoName}`;
     try {
       await axios.delete(apiUrl);
       console.log('Repository deleted successfully');
@@ -105,71 +115,45 @@ const GithubRepoInfo = () => {
     }
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div>
       <ToastContainer />
-      <button onClick={() => setIsModalOpen(true)}>Create New Repository</button>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleModalClose}
-        contentLabel="Create New Repository Modal"
-      >
-        <h2>Create New Repository</h2>
-        <label>
-          Repository Name:
-          <input
-            type="text"
-            value={newRepoName}
-            onChange={(e) => setNewRepoName(e.target.value)}
-          />
-        </label>
-        <button onClick={handleCreateRepo}>Save</button>
-      </Modal>
+      <button onClick={() => setIsCreateModalOpen(true)}>Create New Repository</button>
+      <CreateModal
+        isOpen={isCreateModalOpen}
+        onRequestClose={() => setIsCreateModalOpen(false)}
+        handleCreateRepo={handleCreateRepo}
+        newRepoName={newRepoName}
+        setNewRepoName={setNewRepoName}
+      />
+
+      <EditModal
+        isOpen={isEditModalOpen}
+        onRequestClose={() => setIsEditModalOpen(false)}
+        onEdit={() => handleEditRepo()}
+        editRepoData={editRepoData}
+        onInputChange={handleEditInputChange}
+        onSaveEdit={handleSaveEdit}
+      />
 
       {repos.length > 0 ? (
         <div>
           <h2>List of Repositories</h2>
-            {repos.map(repo => (
-              <div className="repo-container" key={repo.id}>
-                <h3>{repo.name}</h3>
-                <h5>{"Description"}
-                  <p className="repo-container__description--text">{repo.description || "None"}</p>
-                </h5>
-                <p>{repo.html_url}</p>
-                {editRepoData.id === repo.id ? (
-                  <div>
-                    <label>
-                      Name:
-                      <input
-                        type="text"
-                        name="name"
-                        value={editRepoData.name}
-                        onChange={handleEditInputChange}
-                      />
-                    </label>
-                    <label>
-                      Description:
-                      <input
-                        type="text"
-                        name="description"
-                        value={editRepoData.description}
-                        onChange={handleEditInputChange}
-                      />
-                    </label>
-                    <button onClick={() => handleSaveEdit(repo.name)}>Save</button>
-                  </div>
-                ) : (
-                  <div>
-                    <button onClick={() => handleEditRepo(repo.id)}>Edit</button>
-                    <button onClick={() => handleDeleteRepo(repo.name)}>Delete</button>
-                  </div>
-                )}
-              </div>
-            ))}
+          {repos.map(repo => (
+            <div className="repo-container" key={repo.id}>
+              <h3>{repo.name}</h3>
+              <h5>
+                {"Description"}
+                <p className="repo-container__description--text">{repo.description || "None"}</p>
+              </h5>
+              <p>{repo.html_url}</p>
+                <div>
+                  <button onClick={() => handleEditRepo(repo.id)}>Edit</button>
+                  <button className={"repo-container__button--delete"} onClick={() => handleDeleteRepo(repo.name)}>Delete</button>
+                </div>
+              
+            </div>
+          ))}
         </div>
       ) : (
         <p>Loading repository information...</p>

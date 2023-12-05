@@ -8,11 +8,17 @@ button {
   padding: 5px 50px;
 }
 
+
+.new-repo-container__input-name {
+  margin: 0px 10px;
+}
+
 .repo-container {
   border: 1px solid black;
-  padding: 0px 20px 10px;
+  padding: 0px 20px 20px;
   border-radius: 10px;
   margin-bottom: 20px;
+  background-color: #d3d3d3;
 }
 
 .repo-container__description--text {
@@ -20,4 +26,10 @@ button {
   padding: 20px;
   font-weight: normal;
   margin-top: 5px;
+  background-color: #ffffff;
+}
+
+.repo-container__button--delete {
+  font-weight: bold;
+  background-color: red;
 }
