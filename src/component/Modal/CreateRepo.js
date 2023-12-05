@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CreateModal = ({ isOpen, onRequestClose, handleCreateRepo }) => {
+const CreateModal = ({ isOpen, onRequestClose }) => {
   const [newRepoName, setNewRepoName] = useState('');
 
   const handleCreate = async () => {
@@ -23,6 +22,7 @@ const CreateModal = ({ isOpen, onRequestClose, handleCreateRepo }) => {
         <input
           type="text"
           value={newRepoName}
+          className={"create-repo-container__input-name"}
           onChange={(e) => setNewRepoName(e.target.value)}
         />
       </label>

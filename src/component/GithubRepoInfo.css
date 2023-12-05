@@ -9,9 +9,12 @@ button {
 }
 
 
-.new-repo-container__input-name {
+.create-repo-container__input-name, 
+.edit-repo-container__input-description, 
+.edit-repo-container__input-name {
   margin: 0px 10px;
 }
+
 
 .repo-container {
   border: 1px solid black;

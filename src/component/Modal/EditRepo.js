@@ -15,6 +15,7 @@ const EditRepo = ({ isOpen, onRequestClose, editRepoData, onInputChange, onSaveE
         <input
           type="text"
           name="name"
+          className={"edit-repo-container__input-name"}
           value={editRepoData.name}
           onChange={onInputChange}
         />
@@ -24,6 +25,7 @@ const EditRepo = ({ isOpen, onRequestClose, editRepoData, onInputChange, onSaveE
         <input
           type="text"
           name="description"
+          className={"edit-repo-container__input-description"}
           value={editRepoData.description}
           onChange={onInputChange}
         />
