@@ -14,3 +14,10 @@ button {
   border-radius: 10px;
   margin-bottom: 20px;
 }
+
+.repo-container__description--text {
+  border: 1px solid black;
+  padding: 20px;
+  font-weight: normal;
+  margin-top: 5px;
+}

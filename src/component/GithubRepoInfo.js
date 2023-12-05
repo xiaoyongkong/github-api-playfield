@@ -41,6 +41,9 @@ const GithubRepoInfo = () => {
       fetchRepos();
     } catch (error) {
       console.error('Error:', error.message);
+      toast.error('Error:' + error.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   };
 
@@ -68,6 +71,9 @@ const GithubRepoInfo = () => {
         description: editRepoData.description,
       });
       console.log('Repository edited successfully');
+      toast.success('Repository edited successfully', {
+        position: toast.POSITION.TOP_CENTER,
+      });
       fetchRepos();
       setEditRepoData({
         id: null,
@@ -76,6 +82,9 @@ const GithubRepoInfo = () => {
       });
     } catch (error) {
       console.error('Error:', error.message);
+      toast.error('Error:' + error.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   };
 
@@ -84,9 +93,15 @@ const GithubRepoInfo = () => {
     try {
       await axios.delete(apiUrl);
       console.log('Repository deleted successfully');
+      toast.success('Repository deleted successfully', {
+        position: toast.POSITION.TOP_CENTER,
+      });
       fetchRepos();
     } catch (error) {
       console.error('Error:', error.message);
+      toast.error('Error:' + error.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   };
 
@@ -120,9 +135,11 @@ const GithubRepoInfo = () => {
           <h2>List of Repositories</h2>
             {repos.map(repo => (
               <div className="repo-container" key={repo.id}>
-                <h3>{"Repo Name -> " + repo.name}</h3>
-                <p>{"Repo Description -> " + (repo.description || "None")}</p>
-                <p>{"Repo URL -> " + repo.html_url}</p>
+                <h3>{repo.name}</h3>
+                <h5>{"Description"}
+                  <p className="repo-container__description--text">{repo.description || "None"}</p>
+                </h5>
+                <p>{repo.html_url}</p>
                 {editRepoData.id === repo.id ? (
                   <div>
                     <label>
